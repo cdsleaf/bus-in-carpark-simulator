@@ -1,0 +1,24 @@
+{
+  "name": "bus-in-carpark-simulator",
+  "version": "1.0.0",
+  "description": "The application is a simulation of a robot operated bus moving in a carpark.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js --exec babel-node",
+    "test": "jest",
+    "build": "webpack --mode development"
+  },
+  "author": "Theo cho <cdsleaf@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "babel-jest": "^24.0.0",
+    "jest": "^24.0.0",
+    "nodemon": "^1.18.9",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}
