@@ -4,7 +4,8 @@
   "description": "The application is a simulation of a robot operated bus moving in a carpark.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/index.js --exec babel-node",
+    "start": "npm run build && node ./dist/app.js",
+    "dev": "nodemon ./src/index.js --exec babel-node",
     "test": "jest",
     "build": "webpack --mode development"
   },

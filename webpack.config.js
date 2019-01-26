@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     app: './src',
   },
+  target: 'node',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
