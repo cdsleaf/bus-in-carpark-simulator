@@ -1,32 +1,8 @@
+import directionInfo from './directionInfo';
+
 class Commands {
   constructor(x, y){
     this.carParkDimension = { x, y };
-    this.directionInfo = {
-      'NORTH': {
-        type: 'y',
-        movement: 1,
-        LEFT: 'WEST',
-        RIGHT: 'EAST',
-      },
-      'SOUTH': {
-        type: 'y',
-        movement: -1,
-        LEFT: 'EAST',
-        RIGHT: 'WEST',
-      },
-      'EAST': {
-        type: 'x',
-        movement: 1,
-        LEFT: 'NORTH',
-        RIGHT: 'SOUTH',
-      },     
-      'WEST': {
-        type: 'x',
-        movement: -1,
-        LEFT: 'SOUTH',
-        RIGHT: 'NORTH',
-      },
-    }
   }
 
   process(inputtedCommand, position){
@@ -65,7 +41,7 @@ class Commands {
   }
 
   move (position){
-    const { type, movement } = this.directionInfo[position.direction];
+    const { type, movement } = directionInfo[position.direction];
     const moved = position[type] + movement;
     
     if( moved < 0 || moved >= this.carParkDimension[type] ) return position;
@@ -79,14 +55,14 @@ class Commands {
   turnLeft (position){
     return {
       ...position,
-      direction: this.directionInfo[position.direction].LEFT
+      direction: directionInfo[position.direction].LEFT
     }
   }
 
   turnRight (position){
     return {
       ...position,
-      direction: this.directionInfo[position.direction].RIGHT
+      direction: directionInfo[position.direction].RIGHT
     }
   }
 
