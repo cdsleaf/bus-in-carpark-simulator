@@ -1,12 +1,11 @@
+import logger from '../utils/logger';
 import Commands from "../command/command";
 
 class Bus {
   constructor(x, y){
     if(typeof x !== 'number' || typeof y !== 'number' ) {
-      throw {
-        name: 'Error',
-        message: 'carpark dimensions should be a number.'
-      }
+      logger.error('carpark dimensions should be a number.', {x, y});
+      return;
     }
     this.carParkDimension = { x, y }
     this.currentPosition = {
@@ -18,10 +17,8 @@ class Bus {
 
   processCommands(inputtedCommands){
     if(!Array.isArray(inputtedCommands)) {
-      throw {
-        name: 'Error',
-        message: 'Commands should be a array type.'
-      }
+      logger.error('Commands should be a array type.', inputtedCommands);
+      return;
     }
 
     const commands = new Commands(this.carParkDimension);

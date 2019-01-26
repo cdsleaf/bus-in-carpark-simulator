@@ -2,7 +2,7 @@
   "name": "bus-in-carpark-simulator",
   "version": "1.0.0",
   "description": "The application is a simulation of a robot operated bus moving in a carpark.",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/index.js --exec babel-node",
     "test": "jest",
@@ -20,5 +20,8 @@
     "nodemon": "^1.18.9",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1"
+  },
+  "dependencies": {
+    "winston": "^3.2.0"
   }
 }
