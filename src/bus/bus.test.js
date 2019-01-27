@@ -6,6 +6,17 @@ test('creat new bus Object.', () => {
   expect(newBus instanceof Bus).toBeTruthy();
 });
 
+test('should set & get Bus position information', () => {
+  const newBus = new Bus();
+  const position = {
+    x: 2,
+    y: 5,
+    direction: 'NORTH',
+  }
+  newBus.busPosition = position;
+  expect(newBus.busPosition).toMatchObject(position);
+});
+
 test('If not array type value input, should not process', () => {
 
   const carpark = new Carpark(5,5);
@@ -20,4 +31,4 @@ test('If not array type value input, should not process', () => {
   testBus.processCommands('PLACE 0,0,NORTH', carpark);
 
   expect(testBus.busPosition).toMatchObject(expected);
-})
+});
