@@ -2,12 +2,7 @@ import logger from '../utils/logger';
 import Commands from "../command/commands";
 
 class Bus {
-  constructor(x, y){
-    if(typeof x !== 'number' || typeof y !== 'number' ) {
-      logger.error('carpark dimensions should be a number.', {x, y});
-      return;
-    }
-    this.carParkDimension = { x, y }
+  constructor(){
     this.currentPosition = {
       x: null,
       y: null,
@@ -15,13 +10,13 @@ class Bus {
     };
   }
 
-  processCommands(inputtedCommands){
+  processCommands(inputtedCommands, carpark){
     if(!Array.isArray(inputtedCommands)) {
       logger.error('Commands should be a array type.', inputtedCommands);
       return;
     }
-
-    const commands = new Commands(this.carParkDimension.x, this.carParkDimension.y);
+    const {dimensionX, dimensionY} = carpark.dimension;
+    const commands = new Commands(dimensionX, dimensionY);
 
     inputtedCommands.forEach(inputtedCommand => {
       this.currentPosition = commands.process(inputtedCommand, this.currentPosition);
