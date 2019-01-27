@@ -128,4 +128,19 @@ describe('processSingleCommand', () => {
     };
     expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
   });
+
+  test('should return position, when the command does not exist in the command class', () => {
+    const inputtedCommand = [ 'NOT_EXIST_COMMAND' ];
+    const positoin = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+  });
 });
