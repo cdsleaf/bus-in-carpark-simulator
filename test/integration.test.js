@@ -31,3 +31,13 @@ test('too many move commands - 0,0,NORTH -> 10 MOVES -> RIGHT -> MOVE', () => {
   expect(newBus.currentPosition).toMatchObject(expected);
 })
 
+test('commands without MOVE case - 0,0,NORTH -> 3 LEFT, 1 RIGHT', () => {
+  const expected = {
+    x: 0, y: 0, direction: 'SOUTH'
+  }
+  const newBus = new Bus(5,5);
+  const inputtedCommands = loadFile('./test/commandsWithoutMoveCase.txt');
+  newBus.processCommands(inputtedCommands);
+  expect(newBus.currentPosition).toMatchObject(expected);
+})
+
