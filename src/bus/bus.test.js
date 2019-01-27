@@ -19,5 +19,5 @@ test('If not array type value input, should not process', () => {
 
   testBus.processCommands('PLACE 0,0,NORTH', carpark);
 
-  expect(testBus.currentPosition).toMatchObject(expected);
+  expect(testBus.busPosition).toMatchObject(expected);
 })

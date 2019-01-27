@@ -16,7 +16,7 @@ test('Typical cases', () => {
   }
   const inputtedCommands = loadFile('./test/typicalCase.txt');
   newBus.processCommands(inputtedCommands, carpark);
-  expect(newBus.currentPosition).toMatchObject(expected);
+  expect(newBus.busPosition).toMatchObject(expected);
 })
 
 test('commands without PLACE cases', () => {
@@ -25,7 +25,7 @@ test('commands without PLACE cases', () => {
   }
   const inputtedCommands = loadFile('./test/commandsWithoutPlaceCase.txt');
   newBus.processCommands(inputtedCommands, carpark);
-  expect(newBus.currentPosition).toMatchObject(expected);
+  expect(newBus.busPosition).toMatchObject(expected);
 })
 
 test('too many move commands - 0,0,NORTH -> 10 MOVES -> RIGHT -> MOVE', () => {
@@ -34,7 +34,7 @@ test('too many move commands - 0,0,NORTH -> 10 MOVES -> RIGHT -> MOVE', () => {
   }
   const inputtedCommands = loadFile('./test/tooManyMoveCommands.txt');
   newBus.processCommands(inputtedCommands, carpark);
-  expect(newBus.currentPosition).toMatchObject(expected);
+  expect(newBus.busPosition).toMatchObject(expected);
 })
 
 test('commands without MOVE case - 0,0,NORTH -> 3 LEFT, 1 RIGHT', () => {
@@ -43,6 +43,6 @@ test('commands without MOVE case - 0,0,NORTH -> 3 LEFT, 1 RIGHT', () => {
   }
   const inputtedCommands = loadFile('./test/commandsWithoutMoveCase.txt');
   newBus.processCommands(inputtedCommands, carpark);
-  expect(newBus.currentPosition).toMatchObject(expected);
+  expect(newBus.busPosition).toMatchObject(expected);
 })
 

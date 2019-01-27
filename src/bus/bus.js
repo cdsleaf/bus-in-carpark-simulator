@@ -3,11 +3,23 @@ import Commands from "../command/commands";
 
 class Bus {
   constructor(){
-    this.currentPosition = {
-      x: null,
-      y: null,
-      direction: null,
-    };
+    this.x = null;
+    this.y = null;
+    this.direction = null;
+  }
+
+  get busPosition() {
+    return {
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+    }
+  }
+
+  set busPosition(position) {
+    this.x = position.x;
+    this.y = position.y;
+    this.direction = position.direction;
   }
 
   processCommands(inputtedCommands, carpark){
@@ -19,7 +31,7 @@ class Bus {
     const commands = new Commands(dimensionX, dimensionY);
 
     inputtedCommands.forEach(inputtedCommand => {
-      this.currentPosition = commands.process(inputtedCommand, this.currentPosition);
+      this.busPosition = commands.process(inputtedCommand, this.busPosition);
     })
   }
 }
