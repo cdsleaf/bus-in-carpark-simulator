@@ -1,3 +1,4 @@
+import logger from '../utils/logger';
 import fs from 'fs';
 
 export function loadFile(fileName){
@@ -7,6 +8,6 @@ export function loadFile(fileName){
     .map(n=>n.split(' '));
   }
   catch(err){
-    throw err;
+    logger.error(`File Loading error - ${err}`);
   } 
 }
