@@ -1,47 +1,131 @@
 import Process from './process';
-import Carpark from '../bus/Carpark';
-import Bus from '../bus/Bus';
 
 test('should create Process object and get dimension x,y', () => {
-  const carpark = new Carpark(3,5);
-  const processInCarpark = new Process(carpark);
+  const carpark = {
+    dimension: {
+      dimensionX: 3, 
+      dimensionY: 5,
+    }
+  }
+  const process = new Process(carpark);
   const dimension = {
-    dimensionX: processInCarpark.dimensionX,
-    dimensionY: processInCarpark.dimensionY
+    dimensionX: process.dimensionX,
+    dimensionY: process.dimensionY
   }
   expect(dimension).toMatchObject({dimensionX:3, dimensionY:5});
 });
 
-test('should precess the commands', () => {
-  const carpark = new Carpark(5,5);
-  const testBus = new Bus();
-  const processInCarpark = new Process(carpark);
+describe('processCommands', () => {
 
-  const commands = [["PLACE", "0,0,NORTH"], ["MOVE"], ["RIGHT"], ["MOVE"], ["REPORT"]];
-  const expected = {
-    x: 1,
-    y: 1,
-    direction: 'EAST',
-  };
+  let process;
+  let carpark
+  let testBus;
+  beforeEach(() => {
+    carpark = {
+      dimension: {
+        dimensionX: 5, 
+        dimensionY: 5,
+      }
+    };
+    testBus = {
+      busPosition: {
+        x: null,
+        y: null,
+        direction: null,
+      }
+    };
+    process = new Process(carpark);
+    process.processSingleCommand = jest.fn();
+  });
 
-  processInCarpark.processCommands(commands, testBus);
+  test('should process the commands', () => {
 
-  expect(testBus.busPosition).toMatchObject(expected);
-})
+    const commands = [["PLACE", "0,0,NORTH"], ["MOVE"], ["RIGHT"], ["MOVE"], ["REPORT"]];  
+    process.processCommands(commands, testBus);
+  
+    expect(process.processSingleCommand.mock.calls.length).toBe(5);
+  });
+  
+  test('If not array type value input, should not process', () => {
+  
+    process.processCommands('PLACE 0,0,NORTH', testBus);
+  
+    expect(process.processSingleCommand.mock.calls.length).toBe(0);
+  });
+});
 
-test('If not array type value input, should not process', () => {
+describe('processSingleCommand', () => {
 
-  const carpark = new Carpark(5,5);
-  const testBus = new Bus();
-  const processInCarpark = new Process(carpark);
+  let carpark;
+  let process; 
+  beforeAll(() => {
+    carpark = {
+      dimension: {
+        dimensionX: 5, 
+        dimensionY: 5,
+      }
+    };
+    process = new Process(carpark);
+  });
 
-  const expected = {
-    x: null,
-    y: null,
-    direction: null,
-  };
-
-  processInCarpark.processCommands('PLACE 0,0,NORTH', testBus);
-
-  expect(testBus.busPosition).toMatchObject(expected);
+  test('should process PLACE commands', () => {
+    const inputtedCommand = [ 'PLACE', '0,0,NORTH' ];
+    const positoin = {
+      x: null,
+      y: null,
+      direction: null,
+    };
+    
+    const expectedValue = {
+      x: 0,
+      y: 0,
+      direction: 'NORTH',
+    };
+    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+  });
+  
+  test('should process MOVE commands', () => {
+    const inputtedCommand = [ 'MOVE' ];
+    const positoin = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 3,
+      y: 1,
+      direction: 'EAST',
+    };
+    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+  });
+  
+  test('should process LEFT commands', () => {
+    const inputtedCommand = [ 'LEFT' ];
+    const positoin = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'NORTH',
+    };
+    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+  });
+  
+  test('should process RIGHT commands', () => {
+    const inputtedCommand = [ 'RIGHT' ];
+    const positoin = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'SOUTH',
+    };
+    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+  });
 });

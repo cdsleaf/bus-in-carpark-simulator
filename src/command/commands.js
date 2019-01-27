@@ -5,27 +5,6 @@ class Commands {
     this.carParkDimension = { x, y };
   }
 
-  process(inputtedCommand, position){
-    if(inputtedCommand.length > 1 && inputtedCommand[0] === 'PLACE'){
-       return this.setPlace(inputtedCommand[1], position);
-    }else if(inputtedCommand.length !== 1 || position.direction === null){
-      return position;
-    }
-
-    switch(inputtedCommand.toString()){
-      case 'MOVE':
-        return this.move(position);
-      case 'LEFT':
-        return this.turnLeft(position);
-      case 'RIGHT':
-        return this.turnRight(position);
-      case 'REPORT':
-        return this.printReport(position);
-      default: 
-        return null;
-    } 
-  }
-
   setPlace (newPosition, position){
     const [x, y, direction] = newPosition.split(',');
     
@@ -44,7 +23,7 @@ class Commands {
     const { type, movement } = directionInfo[position.direction];
     const moved = position[type] + movement;
     
-    if( moved < 0 || moved >= this.carParkDimension[type] ) return position;
+    if( moved < 0 || moved === this.carParkDimension[type] ) return position;
 
     return {
       ...position,
