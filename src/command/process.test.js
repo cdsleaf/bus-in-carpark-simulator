@@ -1,4 +1,11 @@
 import Process from './process';
+import { 
+  PLACE,
+  MOVE,
+  LEFT,
+  RIGHT,
+  REPORT,
+} from './constantCommands';
 
 test('should create Process object and get dimension x,y', () => {
   const carpark = {
@@ -40,7 +47,7 @@ describe('processCommands', () => {
 
   test('should process the commands', () => {
 
-    const commands = [["PLACE", "0,0,NORTH"], ["MOVE"], ["RIGHT"], ["MOVE"], ["REPORT"]];  
+    const commands = [[PLACE, "0,0,NORTH"], [MOVE], [RIGHT], [MOVE], [REPORT]];  
     process.processCommands(commands, testBus);
   
     expect(process.processSingleCommand.mock.calls.length).toBe(5);
@@ -48,7 +55,7 @@ describe('processCommands', () => {
   
   test('If not array type value input, should not process', () => {
   
-    process.processCommands('PLACE 0,0,NORTH', testBus);
+    process.processCommands(`${PLACE} 0,0,NORTH`, testBus);
   
     expect(process.processSingleCommand.mock.calls.length).toBe(0);
   });
@@ -69,7 +76,7 @@ describe('processSingleCommand', () => {
   });
 
   test('should process PLACE commands', () => {
-    const inputtedCommand = [ 'PLACE', '0,0,NORTH' ];
+    const inputtedCommand = [ PLACE, '0,0,NORTH' ];
     const positoin = {
       x: null,
       y: null,
@@ -85,7 +92,7 @@ describe('processSingleCommand', () => {
   });
   
   test('should process MOVE commands', () => {
-    const inputtedCommand = [ 'MOVE' ];
+    const inputtedCommand = [ MOVE ];
     const positoin = {
       x: 2,
       y: 1,
@@ -100,7 +107,7 @@ describe('processSingleCommand', () => {
   });
   
   test('should process LEFT commands', () => {
-    const inputtedCommand = [ 'LEFT' ];
+    const inputtedCommand = [ LEFT ];
     const positoin = {
       x: 2,
       y: 1,
@@ -115,7 +122,7 @@ describe('processSingleCommand', () => {
   });
   
   test('should process RIGHT commands', () => {
-    const inputtedCommand = [ 'RIGHT' ];
+    const inputtedCommand = [ RIGHT ];
     const positoin = {
       x: 2,
       y: 1,

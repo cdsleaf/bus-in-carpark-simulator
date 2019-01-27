@@ -74,6 +74,7 @@ Output: 3,3,NORTH
       │   ├── commands.js
       │   ├── commands.test.js
       │   ├── directionInfo.js
+      │   ├── constantCommands.js
       │   ├── process.js
       │   └── process.test.js
       ├── test 

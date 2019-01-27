@@ -1,5 +1,12 @@
 import logger from '../utils/logger';
 import Commands from './commands';
+import { 
+  PLACE,
+  MOVE,
+  LEFT,
+  RIGHT,
+  REPORT,
+} from './constantCommands';
 
 class Process {
 
@@ -23,20 +30,20 @@ class Process {
   processSingleCommand(inputtedCommands, position){
     const commands = new Commands(this.dimensionX, this.dimensionY);
 
-    if(inputtedCommands.length > 1 && inputtedCommands[0] === 'PLACE'){
+    if(inputtedCommands.length > 1 && inputtedCommands[0] === PLACE){
        return commands.setPlace(inputtedCommands[1], position);
     }else if(inputtedCommands.length !== 1 || position.direction === null){
       return position;
     }
 
     switch(inputtedCommands.toString()){
-      case 'MOVE':
+      case MOVE:
         return commands.move(position);
-      case 'LEFT':
+      case LEFT:
         return commands.turnLeft(position);
-      case 'RIGHT':
+      case RIGHT:
         return commands.turnRight(position);
-      case 'REPORT':
+      case REPORT:
         return commands.printReport(position);
       default: 
         return position;
