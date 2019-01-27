@@ -6,29 +6,28 @@ test('creat new bus in carpark of dimensions 5 units x 5 units.', () => {
   expect(newBus.carParkDimension).toMatchObject({x: 5, y: 5});
 });
 
-test('If a non-numeric value input should throw an error.', () => {
-  expect.assertions(2);
+test('If a non-numeric value input, it should not process', () => {
 
-  try {
-    new Bus('test', 1);
-  }
-  catch{
-    expect(true).toBe(true);
-  }
+  const testBus1 = new Bus('test', 1);
 
-  try {
-    new Bus(1, 'test');
-  }
-  catch{
-    expect(true).toBe(true);
-  }
+  expect(testBus1.carParkDimension).toBeUndefined();
+
+  const testBus2 = new Bus(1, 'test');
+
+  expect(testBus2.carParkDimension).toBeUndefined();
 })
 
-test('If not array type value input, should throw an error', () => {
-  try {
-    new Bus(1, 1).processCommands('test');
-  }
-  catch{
-    expect(true).toBe(true);
-  }
+test('If not array type value input, should not process', () => {
+
+  const testBus = new Bus(2, 1);
+
+  const expected = {
+    x: null,
+    y: null,
+    direction: null,
+  };
+
+  testBus.processCommands('PLACE 0,0,NORTH');
+
+  expect(testBus.currentPosition).toMatchObject(expected);
 })
