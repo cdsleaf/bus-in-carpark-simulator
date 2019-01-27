@@ -68,6 +68,7 @@ class Commands {
 
   printReport (position){
     console.log(`Output: ${Object.values(position).join(',')}`);
+    return position;
   }
 }
 

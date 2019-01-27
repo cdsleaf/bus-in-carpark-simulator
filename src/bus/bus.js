@@ -1,5 +1,5 @@
 import logger from '../utils/logger';
-import Commands from "../command/command";
+import Commands from "../command/commands";
 
 class Bus {
   constructor(x, y){
@@ -21,7 +21,7 @@ class Bus {
       return;
     }
 
-    const commands = new Commands(this.carParkDimension);
+    const commands = new Commands(this.carParkDimension.x, this.carParkDimension.y);
 
     inputtedCommands.forEach(inputtedCommand => {
       this.currentPosition = commands.process(inputtedCommand, this.currentPosition);

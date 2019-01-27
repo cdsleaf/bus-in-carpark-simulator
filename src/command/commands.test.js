@@ -1,7 +1,7 @@
-import Command from './command';
+import Commands from './commands';
 
 test('should process PLACE commands', () => {
-  const command = new Command(5,5);
+  const command = new Commands(5,5);
   const inputtedCommand = [ 'PLACE', '0,0,NORTH' ];
   const positoin = {
     x: null,
@@ -17,7 +17,7 @@ test('should process PLACE commands', () => {
 })
 
 test('should process MOVE commands', () => {
-  const command = new Command(5,5);
+  const command = new Commands(5,5);
   const inputtedCommand = [ 'MOVE' ];
   const positoin = {
     x: 2,
@@ -33,7 +33,7 @@ test('should process MOVE commands', () => {
 })
 
 test('should process LEFT commands', () => {
-  const command = new Command(5,5);
+  const command = new Commands(5,5);
   const inputtedCommand = [ 'LEFT' ];
   const positoin = {
     x: 2,
@@ -49,7 +49,7 @@ test('should process LEFT commands', () => {
 })
 
 test('should process RIGHT commands', () => {
-  const command = new Command(5,5);
+  const command = new Commands(5,5);
   const inputtedCommand = [ 'RIGHT' ];
   const positoin = {
     x: 2,
