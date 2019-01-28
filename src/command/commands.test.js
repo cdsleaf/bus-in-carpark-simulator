@@ -1,9 +1,195 @@
-import Commands from './commands';
+import { 
+  command,
+  setPlace,
+  move,
+  turnLeft,
+  turnRight,
+  printReport, 
+} from './commands';
+import { 
+  PLACE,
+  MOVE,
+  LEFT,
+  RIGHT,
+  REPORT,
+} from './constantCommands';
+
+describe('command', () => {
+
+  let dimension;
+  beforeEach(() => {
+    dimension = {
+      dimensionX: 5, 
+      dimensionY: 5,
+    };
+  });
+
+  test('If the dimension does not have dimensionX or dimensionY properties, should return false ', () => {
+
+    expect(typeof command(dimension)).toBe('function');
+
+    dimension = { dimensionY: 5 };
+
+    expect(command(dimension)).toBe(false);
+
+    dimension = { dimensionX: 5 };
+
+    expect(command(dimension)).toBe(false);
+  });
+
+  test('If the Input Object does not have x or y or direction properties, should return false ', () => {
+    
+    const returnFn = command(dimension);
+    let position = {x: 0, y: 0, direction: 'NORTH'};
+
+    expect(typeof returnFn(position)).toBe('function');
+
+    position = { y: 0, direction: 'NORTH' };
+
+    expect(returnFn(position)).toBe(false);
+
+    position = {x: 0, y: 0 };
+
+    expect(returnFn(position)).toBe(false);
+  });
+
+  test('If the Input Object does not have type or data properties, should return position', () => {
+
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    let inputtedCommand = {type: PLACE};
+    let expected = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
+
+    inputtedCommand = { data:"0,0,NORTH" };
+
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
+  });
+
+  test('If PLACE command has not ever executed, should return position', () => {
+    const position = {
+      x: null,
+      y: null,
+      direction: null,
+    };
+    let inputtedCommand = {type: MOVE, data:''};
+    let expected = {
+      x: null,
+      y: null,
+      direction: null,
+    };
+
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
+  });
+
+  test('should process PLACE commands', () => {
+    const inputtedCommand = {type: PLACE, data:"0,0,NORTH"};
+    const position = {
+      x: null,
+      y: null,
+      direction: null,
+    };
+    
+    const expectedValue = {
+      x: 0,
+      y: 0,
+      direction: 'NORTH',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+  
+  test('should process MOVE commands', () => {
+    const inputtedCommand = {type:MOVE, data:''};
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 3,
+      y: 1,
+      direction: 'EAST',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+  
+  test('should process LEFT commands', () => {
+    const inputtedCommand = {type:LEFT, data:''};
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'NORTH',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+  
+  test('should process RIGHT commands', () => {
+    const inputtedCommand = {type:RIGHT, data:''};
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'SOUTH',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+
+  test('should process REPORT commands', () => {
+    const inputtedCommand = {type:REPORT, data:''};
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+
+  test('should return position, when the command does not exist in the command class', () => {
+    const inputtedCommand = {type: 'NOT_EXIST_COMMAND', data: ''};
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    const expectedValue = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+  });
+});
+
 
 describe('setPlace', () => {
-  let commands;
+  let dimension;
   beforeEach(() => {
-    commands = new Commands(5,5);
+    dimension = {
+      dimensionX: 5, 
+      dimensionY: 5
+    };
   });
 
   test('should return newPosition ', () => {
@@ -20,7 +206,7 @@ describe('setPlace', () => {
       direction: 'EAST'
     };
 
-    expect(commands.setPlace(newPosition, position)).toMatchObject(expected);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(expected);
   });
 
   test('should return position, when the properties of newPosition is under 0 or over carParkDimension ', () => {
@@ -31,29 +217,32 @@ describe('setPlace', () => {
       direction: null
     };
     let newPosition = '-3,4,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
 
     newPosition = '3,-4,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
 
     newPosition = '5,4,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
 
     newPosition = '6,4,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
 
     newPosition = '3,5,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
 
     newPosition = '3,6,EAST';
-    expect(commands.setPlace(newPosition, position)).toMatchObject(position);
+    expect(setPlace(dimension, newPosition, position)).toMatchObject(position);
   });
 });
 
 describe('move', () => {
-  let commands;
+  let dimension;
   beforeEach(() => {
-    commands = new Commands(5,5);
+    dimension = {
+      dimensionX: 5, 
+      dimensionY: 5
+    };
   });
 
   test('should return the new position that forwarded one step by the direction. ', () => {
@@ -69,7 +258,7 @@ describe('move', () => {
       direction: 'EAST'
     };
 
-    expect(commands.move(position)).toMatchObject(expected);
+    expect(move(dimension, position)).toMatchObject(expected);
   });
 
   test('should return position, when the properties of newPosition is under 0 or over carParkDimension ', () => {
@@ -79,19 +268,15 @@ describe('move', () => {
       y: 1, 
       direction: 'WEST'
     };
-    expect(commands.move(position)).toMatchObject(position);
+    expect(move(dimension, position)).toMatchObject(position);
 
     position.x = 4;
     position.direction = 'EAST';
-    expect(commands.move(position)).toMatchObject(position);
+    expect(move(dimension, position)).toMatchObject(position);
   });
 });
 
 describe('turnLeft', () => {
-  let commands;
-  beforeEach(() => {
-    commands = new Commands(5,5);
-  });
 
   test('should return the direction rotated the bus 90 degrees in the specified direction without changing the position of the bus.', () => {
   
@@ -106,30 +291,26 @@ describe('turnLeft', () => {
       direction: 'NORTH'
     };
 
-    expect(commands.turnLeft(position)).toMatchObject(expected);
+    expect(turnLeft(position)).toMatchObject(expected);
 
     position.direction = 'NORTH';
     expected.direction = 'WEST';
 
-    expect(commands.turnLeft(position)).toMatchObject(expected);
+    expect(turnLeft(position)).toMatchObject(expected);
 
     position.direction = 'WEST';
     expected.direction = 'SOUTH';
 
-    expect(commands.turnLeft(position)).toMatchObject(expected);
+    expect(turnLeft(position)).toMatchObject(expected);
 
     position.direction = 'SOUTH';
     expected.direction = 'EAST';
 
-    expect(commands.turnLeft(position)).toMatchObject(expected);
+    expect(turnLeft(position)).toMatchObject(expected);
   });
 });
 
 describe('turnRight', () => {
-  let commands;
-  beforeEach(() => {
-    commands = new Commands(5,5);
-  });
 
   test('should return the direction rotated the bus 90 degrees in the specified direction without changing the position of the bus.', () => {
   
@@ -144,30 +325,26 @@ describe('turnRight', () => {
       direction: 'SOUTH'
     };
 
-    expect(commands.turnRight(position)).toMatchObject(expected);
+    expect(turnRight(position)).toMatchObject(expected);
 
     position.direction = 'SOUTH';
     expected.direction = 'WEST';
 
-    expect(commands.turnRight(position)).toMatchObject(expected);
+    expect(turnRight(position)).toMatchObject(expected);
 
     position.direction = 'WEST';
     expected.direction = 'NORTH';
 
-    expect(commands.turnRight(position)).toMatchObject(expected);
+    expect(turnRight(position)).toMatchObject(expected);
 
     position.direction = 'NORTH';
     expected.direction = 'EAST';
 
-    expect(commands.turnRight(position)).toMatchObject(expected);
+    expect(turnRight(position)).toMatchObject(expected);
   });
 });
 
 describe('printReport', () => {
-  let commands;
-  beforeEach(() => {
-    commands = new Commands(5,5);
-  });
 
   test('should return position', () => {
   
@@ -182,6 +359,6 @@ describe('printReport', () => {
       direction: 'EAST'
     };
 
-    expect(commands.printReport(position)).toMatchObject(expected);
+    expect(printReport(position)).toMatchObject(expected);
   });
 });

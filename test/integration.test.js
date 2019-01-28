@@ -1,16 +1,17 @@
 import { loadFile } from '../src/utils/file';
 import Carpark from '../src/bus/carpark';
 import Bus from '../src/bus/bus';
-import Process from '../src/command/process';
+import { processCommands } from '../src/command/process';
+import { command } from '../src/command/commands';
 
 let carpark;
 let newBus;
-let process;
+let runCommand;
 
 beforeEach(() => {
   carpark = new Carpark(5,5);
   newBus = new Bus();
-  process = new Process(carpark);
+  runCommand = command(carpark.dimension);
 });
 
 test('Typical cases', () => {
@@ -18,8 +19,7 @@ test('Typical cases', () => {
     x: 3, y: 4, direction: 'NORTH'
   }
   const inputtedCommands = loadFile('./test/typicalCase.txt');
-  process.processCommands(inputtedCommands, newBus);
-  expect(newBus.busPosition).toMatchObject(expected);
+  expect(processCommands(runCommand)(newBus.busPosition)(inputtedCommands)).toMatchObject(expected);
 })
 
 test('commands without PLACE cases', () => {
@@ -27,8 +27,7 @@ test('commands without PLACE cases', () => {
     x: null, y: null, direction: null
   }
   const inputtedCommands = loadFile('./test/commandsWithoutPlaceCase.txt');
-  process.processCommands(inputtedCommands, newBus);
-  expect(newBus.busPosition).toMatchObject(expected);
+  expect(processCommands(runCommand)(newBus.busPosition)(inputtedCommands)).toMatchObject(expected);
 })
 
 test('too many move commands - 0,0,NORTH -> 10 MOVES -> RIGHT -> MOVE', () => {
@@ -36,8 +35,7 @@ test('too many move commands - 0,0,NORTH -> 10 MOVES -> RIGHT -> MOVE', () => {
     x: 1, y: 4, direction: 'EAST'
   }
   const inputtedCommands = loadFile('./test/tooManyMoveCommands.txt');
-  process.processCommands(inputtedCommands, newBus);
-  expect(newBus.busPosition).toMatchObject(expected);
+  expect(processCommands(runCommand)(newBus.busPosition)(inputtedCommands)).toMatchObject(expected);
 })
 
 test('commands without MOVE case - 0,0,NORTH -> 3 LEFT, 1 RIGHT', () => {
@@ -45,7 +43,6 @@ test('commands without MOVE case - 0,0,NORTH -> 3 LEFT, 1 RIGHT', () => {
     x: 0, y: 0, direction: 'SOUTH'
   }
   const inputtedCommands = loadFile('./test/commandsWithoutMoveCase.txt');
-  process.processCommands(inputtedCommands, newBus);
-  expect(newBus.busPosition).toMatchObject(expected);
+  expect(processCommands(runCommand)(newBus.busPosition)(inputtedCommands)).toMatchObject(expected);
 })
 

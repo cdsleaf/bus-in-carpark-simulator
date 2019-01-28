@@ -1,12 +1,13 @@
 import { loadFile } from './utils/file';
 import Carpark from './bus/carpark';
 import Bus from './bus/bus';
-import Process from './command/process';
+import { processCommands } from './command/process';
+import { command } from './command/commands';
 
 const carpark = new Carpark(5,5);
 const bus = new Bus();
-const processInCarpark = new Process(carpark);
+const runCommand = command(carpark.dimension);
 
-const inputtedCommands = loadFile('input.txt');
+const commands = loadFile('input.txt');
 
-processInCarpark.processCommands(inputtedCommands, bus);
+bus.busPosition = processCommands(runCommand)(bus.busPosition)(commands);
