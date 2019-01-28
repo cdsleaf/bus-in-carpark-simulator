@@ -14,6 +14,7 @@ class Process {
     const { dimensionX, dimensionY } = carpark.dimension;
     this.dimensionX = dimensionX;
     this.dimensionY = dimensionY;
+    this.command = new Commands(dimensionX, dimensionY);
   }
 
   processCommands(inputtedCommands, bus){
@@ -27,25 +28,31 @@ class Process {
     })
   }
 
-  processSingleCommand(inputtedCommands, position){
-    const commands = new Commands(this.dimensionX, this.dimensionY);
+  processSingleCommand(commandData, position){
 
-    if(inputtedCommands.length > 1 && inputtedCommands[0] === PLACE){
-       return commands.setPlace(inputtedCommands[1], position);
-    }else if(inputtedCommands.length !== 1 || position.direction === null){
+    if(!commandData.hasOwnProperty('type') || !commandData.hasOwnProperty('data')){
+      logger.error('The Input Object must have type & data properties.', position);
       return position;
     }
 
-    switch(inputtedCommands.toString()){
+    if(commandData.type !== PLACE && position.direction === null){
+      logger.error('No PLACE command was executed.', position);
+      return position;
+    }
+
+    switch(commandData.type){
+      case PLACE:
+        return this.command.setPlace(commandData.data, position);
       case MOVE:
-        return commands.move(position);
+        return this.command.move(position);
       case LEFT:
-        return commands.turnLeft(position);
+        return this.command.turnLeft(position);
       case RIGHT:
-        return commands.turnRight(position);
+        return this.command.turnRight(position);
       case REPORT:
-        return commands.printReport(position);
+        return this.command.printReport(position);
       default: 
+        logger.error('Commands does not exist.', commandData.type);
         return position;
     } 
   }

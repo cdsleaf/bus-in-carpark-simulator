@@ -47,7 +47,13 @@ describe('processCommands', () => {
 
   test('should process the commands', () => {
 
-    const commands = [[PLACE, "0,0,NORTH"], [MOVE], [RIGHT], [MOVE], [REPORT]];  
+    const commands = [
+      {type: PLACE, data:"0,0,NORTH"}, 
+      {type:MOVE, data:''}, 
+      {type:RIGHT, data:''}, 
+      {type:MOVE, data:''}, 
+      {type:REPORT, data:''}, 
+    ];  
     process.processCommands(commands, testBus);
   
     expect(process.processSingleCommand.mock.calls.length).toBe(5);
@@ -75,9 +81,29 @@ describe('processSingleCommand', () => {
     process = new Process(carpark);
   });
 
+  test('If the Input Object does not have type or data properties, should return position', () => {
+    const position = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+    let inputtedCommand = {type: PLACE};
+    let expected = {
+      x: 2,
+      y: 1,
+      direction: 'EAST',
+    };
+
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expected);
+
+    inputtedCommand = { data:"0,0,NORTH" };
+
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expected);
+  });
+
   test('should process PLACE commands', () => {
-    const inputtedCommand = [ PLACE, '0,0,NORTH' ];
-    const positoin = {
+    const inputtedCommand = {type: PLACE, data:"0,0,NORTH"};
+    const position = {
       x: null,
       y: null,
       direction: null,
@@ -88,12 +114,12 @@ describe('processSingleCommand', () => {
       y: 0,
       direction: 'NORTH',
     };
-    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expectedValue);
   });
   
   test('should process MOVE commands', () => {
-    const inputtedCommand = [ MOVE ];
-    const positoin = {
+    const inputtedCommand = {type:MOVE, data:''};
+    const position = {
       x: 2,
       y: 1,
       direction: 'EAST',
@@ -103,12 +129,12 @@ describe('processSingleCommand', () => {
       y: 1,
       direction: 'EAST',
     };
-    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expectedValue);
   });
   
   test('should process LEFT commands', () => {
-    const inputtedCommand = [ LEFT ];
-    const positoin = {
+    const inputtedCommand = {type:LEFT, data:''};
+    const position = {
       x: 2,
       y: 1,
       direction: 'EAST',
@@ -118,12 +144,12 @@ describe('processSingleCommand', () => {
       y: 1,
       direction: 'NORTH',
     };
-    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expectedValue);
   });
   
   test('should process RIGHT commands', () => {
-    const inputtedCommand = [ RIGHT ];
-    const positoin = {
+    const inputtedCommand = {type:RIGHT, data:''};
+    const position = {
       x: 2,
       y: 1,
       direction: 'EAST',
@@ -133,12 +159,12 @@ describe('processSingleCommand', () => {
       y: 1,
       direction: 'SOUTH',
     };
-    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expectedValue);
   });
 
   test('should return position, when the command does not exist in the command class', () => {
-    const inputtedCommand = [ 'NOT_EXIST_COMMAND' ];
-    const positoin = {
+    const inputtedCommand = {type: 'NOT_EXIST_COMMAND', data: ''};
+    const position = {
       x: 2,
       y: 1,
       direction: 'EAST',
@@ -148,6 +174,6 @@ describe('processSingleCommand', () => {
       y: 1,
       direction: 'EAST',
     };
-    expect(process.processSingleCommand(inputtedCommand, positoin)).toMatchObject(expectedValue);
+    expect(process.processSingleCommand(inputtedCommand, position)).toMatchObject(expectedValue);
   });
 });
