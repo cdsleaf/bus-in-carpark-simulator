@@ -1,10 +1,11 @@
 import logger from '../utils/logger';
 import fs from 'fs';
+import os from 'os';
 
 export function loadFile(fileName){
   try {
     return fs.readFileSync(fileName, 'utf8')
-      .split(/\r\n|\n/)
+      .split(os.EOL)
       .map(n=>n.split(' '))
       .reduce((a,v) => {
         return v[0] === ''
