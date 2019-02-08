@@ -1,28 +1,28 @@
 const directionInfo = {
-  'NORTH': {
+  NORTH: {
     type: 'y',
     movement: 1,
     LEFT: 'WEST',
     RIGHT: 'EAST',
   },
-  'SOUTH': {
+  SOUTH: {
     type: 'y',
     movement: -1,
     LEFT: 'EAST',
     RIGHT: 'WEST',
   },
-  'EAST': {
+  EAST: {
     type: 'x',
     movement: 1,
     LEFT: 'NORTH',
     RIGHT: 'SOUTH',
-  },     
-  'WEST': {
+  },
+  WEST: {
     type: 'x',
     movement: -1,
     LEFT: 'SOUTH',
     RIGHT: 'NORTH',
   },
-}
+};
 
 export default directionInfo;

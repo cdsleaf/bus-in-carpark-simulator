@@ -1,10 +1,10 @@
-import { loadFile } from './utils/file';
+import loadFile from './utils/file';
 import Carpark from './bus/carpark';
 import Bus from './bus/bus';
-import { processCommands } from './command/process';
+import processCommands from './command/process';
 import { command } from './command/commands';
 
-const carpark = new Carpark(5,5);
+const carpark = new Carpark(5, 5);
 const bus = new Bus();
 const runCommand = command(carpark.dimension);
 

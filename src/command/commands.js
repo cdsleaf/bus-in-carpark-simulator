@@ -1,6 +1,6 @@
 import logger from '../utils/logger';
 import directionInfo from './directionInfo';
-import { 
+import {
   PLACE,
   MOVE,
   LEFT,
@@ -8,32 +8,75 @@ import {
   REPORT,
 } from './constantCommands';
 
+export const setPlace = (dimension, newPosition, position) => {
+  const [x, y, direction] = newPosition.split(',');
+
+  if (x < 0 || y < 0 || x >= dimension.dimensionX || y >= dimension.dimensionY) {
+    return { ...position };
+  }
+
+  return {
+    x: Number(x),
+    y: Number(y),
+    direction,
+  };
+};
+
+export const move = (dimension, position) => {
+  const dimensionObj = {
+    x: dimension.dimensionX,
+    y: dimension.dimensionY,
+  };
+  const { type, movement } = directionInfo[position.direction];
+  const moved = position[type] + movement;
+  if (moved < 0 || moved === dimensionObj[type]) return { ...position };
+
+  return {
+    ...position,
+    [type]: moved,
+  };
+};
+
+export const turnLeft = position => ({
+  ...position,
+  direction: directionInfo[position.direction].LEFT,
+});
+
+export const turnRight = position => ({
+  ...position,
+  direction: directionInfo[position.direction].RIGHT,
+});
+
+export const printReport = (position) => {
+  console.log(`Output: ${Object.values(position).join(',')}`);
+  return { ...position };
+};
+
 export const command = (dimension) => {
-  if(!dimension.hasOwnProperty('dimensionX') 
-    || !dimension.hasOwnProperty('dimensionY')){
+  if (dimension.dimensionX === undefined
+    || dimension.dimensionY === undefined) {
     logger.error('The dimension must have dimensionX & dimensionY properties.', dimension);
     return false;
   }
   return (position) => {
-    if(!position.hasOwnProperty('x') 
-      || !position.hasOwnProperty('y') 
-      || !position.hasOwnProperty('direction')){
+    if (position.x === undefined
+      || position.y === undefined
+      || position.direction === undefined) {
       logger.error('The position must have x & y & direction properties.', position);
       return false;
     }
     return (commandData) => {
-
-      if(!commandData.hasOwnProperty('type') || !commandData.hasOwnProperty('data')){
+      if (commandData.type === undefined || commandData.data === undefined) {
         logger.error('The Input Object must have type & data properties.', position);
         return { ...position };
       }
 
-      if(commandData.type !== PLACE && position.direction === null){
+      if (commandData.type !== PLACE && position.direction === null) {
         logger.error('No PLACE command was executed.', position);
         return { ...position };
       }
 
-      switch(commandData.type){
+      switch (commandData.type) {
         case PLACE:
           return setPlace(dimension, commandData.data, position);
         case MOVE:
@@ -44,59 +87,10 @@ export const command = (dimension) => {
           return turnRight(position);
         case REPORT:
           return printReport(position);
-        default: 
+        default:
           logger.error('Commands does not exist.', commandData.type);
           return { ...position };
-      } 
-    }
-  }
-}; 
-
-export const setPlace = (dimension, newPosition, position) => {
-  const [x, y, direction] = newPosition.split(',');
-  
-  if(x < 0 || y < 0 || x >= dimension.dimensionX || y >= dimension.dimensionY){
-    return { ...position };
-  }
-
-  return {
-    x: Number(x), 
-    y: Number(y), 
-    direction
-  }
-}
-
-export const move = (dimension, position) => {
-  const dimensionObj = {
-    x: dimension.dimensionX, 
-    y: dimension.dimensionY,
-  }
-  const { type, movement } = directionInfo[position.direction];
-  const moved = position[type] + movement;
-  
-  if( moved < 0 || moved === dimensionObj[type] ) return { ...position };
-
-  return {
-    ...position,
-    [type]: moved
-  }
-}
-
-export const turnLeft = (position) => {
-  return {
-    ...position,
-    direction: directionInfo[position.direction].LEFT
-  }
-}
-
-export const turnRight = (position) => {
-  return {
-    ...position,
-    direction: directionInfo[position.direction].RIGHT
-  }
-}
-
-export const printReport = (position) => {
-  console.log(`Output: ${Object.values(position).join(',')}`);
-  return { ...position };
-}
+      }
+    };
+  };
+};

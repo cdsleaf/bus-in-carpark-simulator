@@ -1,5 +1,5 @@
 class Bus {
-  constructor(){
+  constructor() {
     this.x = null;
     this.y = null;
     this.direction = null;
@@ -10,7 +10,7 @@ class Bus {
       x: this.x,
       y: this.y,
       direction: this.direction,
-    }
+    };
   }
 
   set busPosition(position) {

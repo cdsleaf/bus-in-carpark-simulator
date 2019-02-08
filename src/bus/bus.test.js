@@ -1,5 +1,4 @@
 import Bus from './bus';
-import Carpark from './carpark';
 
 test('creat new bus Object.', () => {
   const newBus = new Bus();
@@ -12,7 +11,7 @@ test('should set & get Bus position information', () => {
     x: 2,
     y: 5,
     direction: 'NORTH',
-  }
+  };
   newBus.busPosition = position;
   expect(newBus.busPosition).toMatchObject(position);
 });
