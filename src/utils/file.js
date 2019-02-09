@@ -1,6 +1,6 @@
 import fs from 'fs';
 import os from 'os';
-import logger from './logger';
+import AppError from './appError';
 
 const loadFile = (fileName) => {
   try {
@@ -18,8 +18,7 @@ const loadFile = (fileName) => {
         ]
       ), []);
   } catch (err) {
-    logger.error(`File Loading error - ${err}`);
-    return false;
+    throw new AppError(`File Loading error. - ${err}`, true);
   }
 };
 

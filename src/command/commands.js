@@ -1,4 +1,5 @@
 import logger from '../utils/logger';
+import AppError from '../utils/appError';
 import directionInfo from './directionInfo';
 import {
   PLACE,
@@ -48,32 +49,28 @@ export const turnRight = position => ({
 });
 
 export const printReport = (position) => {
-  console.log(`Output: ${Object.values(position).join(',')}`);
+  logger.info(`Output: ${Object.values(position).join(',')}`);
   return { ...position };
 };
 
 export const command = (dimension) => {
   if (dimension.dimensionX === undefined
     || dimension.dimensionY === undefined) {
-    logger.error('The dimension must have dimensionX & dimensionY properties.', dimension);
-    return false;
+    throw new AppError(`The parameter 'dimension' in command must have dimensionX & dimensionY properties. ${dimension}`, true);
   }
   return (position) => {
     if (position.x === undefined
       || position.y === undefined
       || position.direction === undefined) {
-      logger.error('The position must have x & y & direction properties.', position);
-      return false;
+      throw new AppError(`The parameter 'position' in command must have x & y & direction properties. ${position}`, true);
     }
     return (commandData) => {
       if (commandData.type === undefined || commandData.data === undefined) {
-        logger.error('The Input Object must have type & data properties.', position);
-        return { ...position };
+        throw new AppError(`The parameter 'commandData' in command must have type & data properties. ${commandData}`, true);
       }
 
       if (commandData.type !== PLACE && position.direction === null) {
-        logger.error('No PLACE command was executed.', position);
-        return { ...position };
+        throw new AppError(`No PLACE command was executed. ${commandData}`, true);
       }
 
       switch (commandData.type) {
@@ -88,8 +85,7 @@ export const command = (dimension) => {
         case REPORT:
           return printReport(position);
         default:
-          logger.error('Commands does not exist.', commandData.type);
-          return { ...position };
+          throw new AppError(`${commandData.type} Commands does not exist.`, true);
       }
     };
   };

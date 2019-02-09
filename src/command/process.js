@@ -1,23 +1,18 @@
-import logger from '../utils/logger';
+import AppError from '../utils/appError';
 
 const processCommands = (fn) => {
   if (typeof fn !== 'function') {
-    logger.error('The fn should be a function type.', fn);
-    return false;
+    throw new AppError(`The parameter 'fn' in processCommands should be a function type. ${fn}`, true);
   }
   return (busPosition) => {
     if (busPosition.x === undefined
       || busPosition.y === undefined
       || busPosition.direction === undefined) {
-      logger.error('The busPosition must have x & y & direction properties.', busPosition);
-      return false;
+      throw new AppError(`The parameter 'busPosition' in processCommands must have x & y & direction properties. ${busPosition}`, true);
     }
     return (commands) => {
       if (!Array.isArray(commands)) {
-        logger.error('Commands should be a array type.', commands);
-        return {
-          ...busPosition,
-        };
+        throw new AppError(`The parameter 'Commands' in processCommands should be a array type. ${commands}`, true);
       }
       return commands.reduce((previousPosition, singleCommand) => ({
         ...previousPosition,
