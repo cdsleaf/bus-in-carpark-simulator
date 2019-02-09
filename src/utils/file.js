@@ -18,7 +18,7 @@ const loadFile = (fileName) => {
         ]
       ), []);
   } catch (err) {
-    throw new AppError(`File Loading error. - ${err}`, true);
+    throw new AppError(`File Loading error. - ${err}`);
   }
 };
 

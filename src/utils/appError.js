@@ -1,7 +1,7 @@
 import logger from './logger';
 
 class AppError extends Error {
-  constructor(message, isOperational) {
+  constructor(message, isOperational = true) {
     super(message);
     this.isOperational = isOperational;
   }

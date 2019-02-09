@@ -56,21 +56,21 @@ export const printReport = (position) => {
 export const command = (dimension) => {
   if (dimension.dimensionX === undefined
     || dimension.dimensionY === undefined) {
-    throw new AppError(`The parameter 'dimension' in command must have dimensionX & dimensionY properties. ${dimension}`, true);
+    throw new AppError(`The parameter 'dimension' in command must have dimensionX & dimensionY properties. ${dimension}`);
   }
   return (position) => {
     if (position.x === undefined
       || position.y === undefined
       || position.direction === undefined) {
-      throw new AppError(`The parameter 'position' in command must have x & y & direction properties. ${position}`, true);
+      throw new AppError(`The parameter 'position' in command must have x & y & direction properties. ${position}`);
     }
     return (commandData) => {
       if (commandData.type === undefined || commandData.data === undefined) {
-        throw new AppError(`The parameter 'commandData' in command must have type & data properties. ${commandData}`, true);
+        throw new AppError(`The parameter 'commandData' in command must have type & data properties. ${commandData}`);
       }
 
       if (commandData.type !== PLACE && position.direction === null) {
-        throw new AppError(`No PLACE command was executed. ${commandData}`, true);
+        throw new AppError(`No PLACE command was executed. ${commandData}`);
       }
 
       switch (commandData.type) {
@@ -85,7 +85,7 @@ export const command = (dimension) => {
         case REPORT:
           return printReport(position);
         default:
-          throw new AppError(`${commandData.type} Commands does not exist.`, true);
+          throw new AppError(`${commandData.type} Commands does not exist.`);
       }
     };
   };
