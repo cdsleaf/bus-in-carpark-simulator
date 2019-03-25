@@ -25,27 +25,36 @@ The application is a simulation of a robot operated bus moving in a carpark.
 Here is some example input and output:
 
 ```
+# input 
 PLACE 0,0,NORTH
 MOVE
 REPORT
-Output: 0,1,NORTH
+
+# output
+info: Output: 0,1,NORTH
 ```
 
 ```
+# input 
 PLACE 0,0,NORTH
 LEFT
 REPORT
-Output: 0,0,WEST
+
+# output
+info: Output: 0,0,WEST
 ```
 
 ```
+# input 
 PLACE 1,2,EAST
 MOVE
 MOVE
 LEFT
 MOVE
 REPORT
-Output: 3,3,NORTH
+
+# output
+info: Output: 3,3,NORTH
 ```
 
 ## Documentation
