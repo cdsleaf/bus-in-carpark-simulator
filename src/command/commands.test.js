@@ -6,13 +6,7 @@ import {
   turnRight,
   printReport,
 } from './commands';
-import {
-  PLACE,
-  MOVE,
-  LEFT,
-  RIGHT,
-  REPORT,
-} from './constantCommands';
+import { PLACE, MOVE, LEFT, RIGHT, REPORT } from './constantCommands';
 
 describe('command', () => {
   let dimension;
@@ -21,69 +15,6 @@ describe('command', () => {
       dimensionX: 5,
       dimensionY: 5,
     };
-  });
-
-  test('If the dimension does not have dimensionX or dimensionY properties, should return false ', () => {
-    expect(typeof command(dimension)).toBe('function');
-
-    dimension = { dimensionY: 5 };
-
-    expect(command(dimension)).toBe(false);
-
-    dimension = { dimensionX: 5 };
-
-    expect(command(dimension)).toBe(false);
-  });
-
-  test('If the Input Object does not have x or y or direction properties, should return false ', () => {
-    const returnFn = command(dimension);
-    let position = { x: 0, y: 0, direction: 'NORTH' };
-
-    expect(typeof returnFn(position)).toBe('function');
-
-    position = { y: 0, direction: 'NORTH' };
-
-    expect(returnFn(position)).toBe(false);
-
-    position = { x: 0, y: 0 };
-
-    expect(returnFn(position)).toBe(false);
-  });
-
-  test('If the Input Object does not have type or data properties, should return position', () => {
-    const position = {
-      x: 2,
-      y: 1,
-      direction: 'EAST',
-    };
-    let inputtedCommand = { type: PLACE };
-    const expected = {
-      x: 2,
-      y: 1,
-      direction: 'EAST',
-    };
-
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
-
-    inputtedCommand = { data: '0,0,NORTH' };
-
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
-  });
-
-  test('If PLACE command has not ever executed, should return position', () => {
-    const position = {
-      x: null,
-      y: null,
-      direction: null,
-    };
-    const inputtedCommand = { type: MOVE, data: '' };
-    const expected = {
-      x: null,
-      y: null,
-      direction: null,
-    };
-
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expected);
   });
 
   test('should process PLACE commands', () => {
@@ -98,7 +29,9 @@ describe('command', () => {
       y: 0,
       direction: 'NORTH',
     };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(
+      expectedValue
+    );
   });
 
   test('should process MOVE commands', () => {
@@ -113,7 +46,9 @@ describe('command', () => {
       y: 1,
       direction: 'EAST',
     };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(
+      expectedValue
+    );
   });
 
   test('should process LEFT commands', () => {
@@ -128,7 +63,9 @@ describe('command', () => {
       y: 1,
       direction: 'NORTH',
     };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(
+      expectedValue
+    );
   });
 
   test('should process RIGHT commands', () => {
@@ -143,7 +80,9 @@ describe('command', () => {
       y: 1,
       direction: 'SOUTH',
     };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(
+      expectedValue
+    );
   });
 
   test('should process REPORT commands', () => {
@@ -158,25 +97,11 @@ describe('command', () => {
       y: 1,
       direction: 'EAST',
     };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
-  });
-
-  test('should return position, when the command does not exist in the command class', () => {
-    const inputtedCommand = { type: 'NOT_EXIST_COMMAND', data: '' };
-    const position = {
-      x: 2,
-      y: 1,
-      direction: 'EAST',
-    };
-    const expectedValue = {
-      x: 2,
-      y: 1,
-      direction: 'EAST',
-    };
-    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(expectedValue);
+    expect(command(dimension)(position)(inputtedCommand)).toMatchObject(
+      expectedValue
+    );
   });
 });
-
 
 describe('setPlace', () => {
   let dimension;

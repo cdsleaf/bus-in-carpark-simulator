@@ -13,13 +13,3 @@ test('should set & get carpark dimension information', () => {
   };
   expect(carpark.dimension).toMatchObject(expected);
 });
-
-test('If a non-numeric value input, it should not process', () => {
-  const expected = { dimensionX: undefined, dimensionY: undefined };
-
-  const carpark1 = new Carpark('test', 1);
-  expect(carpark1.dimension).toMatchObject(expected);
-
-  const carpark2 = new Carpark(1, 'test');
-  expect(carpark2.dimension).toMatchObject(expected);
-});
