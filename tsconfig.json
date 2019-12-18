@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "target": "esnext",
+    "baseUrl": ".",
+    "outDir": "./dist"
+  },
+  "include": ["src"]
+}
